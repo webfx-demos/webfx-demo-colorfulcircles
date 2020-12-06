@@ -1,29 +1,29 @@
 # Live demo
 
-This demo is published on [this website][demo-live-link].
+The demo is published on [this page][demo-live-link].
 
-This is the first basic demo and probably one of the simplest JavaFx application you can write beyond Hello World.
-Its main purpose is to propose a starting frame for developing WebFx applications.
+This is the first basic demo and perhaps one of the simplest JavaFx application you can write beyond Hello World.
+Its main purpose is to highlight the essential features of WebFx, and to propose a starting frame for developing WebFx applications.
 
 # Highlighted features
 
 ## Quick start and small footprint
 
-This demo has a decent quick start and a quite small footprint (87 KB download) despite the big size of the JavaFx library.
+This demo has a decent start time, and a quite small footprint (87 KB download) despite the big size of the JavaFx library.
 This is achieved mainly thanks to the dead code elimination (DCE) feature of GWT.
 The WebFx architecture is designed to make this DCE efficient and only the part of the JavaFx library required by your application will remain in the final web application. 
 
 ## JavaFx to HTML mapping
 
 The main job of WebFx is to map all nodes of the JavaFx scene graph into HTML elements of the browser DOM.
-If you inspect the demo DOM in the browser, you will recognize the JavaFx scene graph structure
+If you inspect the demo DOM in your browser, you will recognize the JavaFx scene graph structure
 (nodes have the "fx-" prefix, for example: fx-scene, fx-group, fx-circle, etc...).
 
 ## Reusability
 
 This demo is an example of how you can easily reuse existing pieces of code written in JavaFx in a WebFx application.
 In this case, we reused this [original code][oracle-source-link] of the Oracle demo and slightly modified it, so the circles better fit in the browser window
-(because the window is sized by the browser as opposed to a standard JavaFx window that is sized by the code).
+(because on the web platform, the window is sized by the browser, whereas on the JavaFx platform the window is sized by the code).
 Here is the [resulting code][demo-source-link] of this demo.
 
 ## Cross-platform
