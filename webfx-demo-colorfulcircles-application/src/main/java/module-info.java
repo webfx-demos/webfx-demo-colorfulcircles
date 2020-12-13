@@ -8,9 +8,9 @@ module webfx.demo.colorfulcircles.application {
     requires javafx.graphics;
 
     // Exported packages
-    exports webfx.demo.colorfulcircles;
+    exports dev.webfx.demo.colorfulcircles;
 
     // Provided services
-    provides javafx.application.Application with webfx.demo.colorfulcircles.ColorfulCircles;
+    provides javafx.application.Application with dev.webfx.demo.colorfulcircles.ColorfulCircles;
 
 }

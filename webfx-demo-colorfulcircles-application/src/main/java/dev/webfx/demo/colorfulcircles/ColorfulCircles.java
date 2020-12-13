@@ -1,4 +1,4 @@
-package webfx.demo.colorfulcircles;
+package dev.webfx.demo.colorfulcircles;
 
 import javafx.animation.*;
 import javafx.application.Application;

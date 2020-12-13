@@ -36,7 +36,7 @@ This workflow also copies the result of the GWT compilation into the [web-build 
 In this way, the live demo is also automatically updated during this process. 
 
 [demo-live-link]: https://colorfulcircles.webfx.dev
-[demo-source-link]: https://github.com/webfx-project/webfx-demo-colorfulcircles/blob/main/webfx-demo-colorfulcircles-application/src/main/java/webfx/demo/colorfulcircles/ColorfulCircles.java
+[demo-source-link]: https://github.com/webfx-project/webfx-demo-colorfulcircles/blob/main/webfx-demo-colorfulcircles-application/src/main/java/dev/webfx/demo/colorfulcircles/ColorfulCircles.java
 [oracle-source-link]: https://docs.oracle.com/javafx/2/get_started/ColorfulCircles.java.html
 [demo-workflow-link]: https://github.com/webfx-project/webfx-demo-colorfulcircles/blob/main/.github/workflows/builds.yml
 [demo-snapshot-release-link]: https://github.com/webfx-project/webfx-demo-colorfulcircles/releases/tag/SNAPSHOT
