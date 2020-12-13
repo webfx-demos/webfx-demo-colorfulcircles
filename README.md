@@ -35,7 +35,7 @@ For example, this demo has a [Github workflow][demo-workflow-link] triggered on 
 This workflow also copies the result of the GWT compilation into the [web-build branch][demo-web-build-branch-link] that Netlify uses as the source for the [live demo][demo-live-link].
 In this way, the live demo is also automatically updated during this process. 
 
-[demo-live-link]: https://colorfulcircles.webfx-project.org
+[demo-live-link]: https://colorfulcircles.webfx.dev
 [demo-source-link]: https://github.com/webfx-project/webfx-demo-colorfulcircles/blob/main/webfx-demo-colorfulcircles-application/src/main/java/webfx/demo/colorfulcircles/ColorfulCircles.java
 [oracle-source-link]: https://docs.oracle.com/javafx/2/get_started/ColorfulCircles.java.html
 [demo-workflow-link]: https://github.com/webfx-project/webfx-demo-colorfulcircles/blob/main/.github/workflows/builds.yml
