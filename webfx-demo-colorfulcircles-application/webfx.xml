@@ -6,7 +6,7 @@
     </packages>
 
     <providers>
-        <provider spi="javafx.application.Application">dev.webfx.demo.colorfulcircles.ColorfulCircles</provider>
+        <javafx.application.Application>dev.webfx.demo.colorfulcircles.ColorfulCircles</javafx.application.Application>
     </providers>
 
     <dependencies>
