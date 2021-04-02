@@ -5,12 +5,11 @@
         <source-packages/>
     </packages>
 
-    <providers>
-        <javafx.application.Application>dev.webfx.demo.colorfulcircles.ColorfulCircles</javafx.application.Application>
-    </providers>
-
     <dependencies>
         <source-modules/>
     </dependencies>
 
+    <providers>
+        <javafx.application.Application>dev.webfx.demo.colorfulcircles.ColorfulCircles</javafx.application.Application>
+    </providers>
 </project>
