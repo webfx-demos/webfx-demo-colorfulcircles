@@ -8,9 +8,7 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>dev.webfx</groupId>
     <artifactId>webfx-demo-colorfulcircles</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
