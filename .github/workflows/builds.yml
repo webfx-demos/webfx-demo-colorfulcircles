@@ -84,7 +84,7 @@ jobs:
       web-push-email: ${{ secrets.API_GITHUB_EMAIL }}
       jdk-version: '15.0.1'
       xcode-version: '11.7.0'
-      graalvm-version: '20.3.0.java11'
+      graalvm-version: '21.3.0.java11'
       API_GITHUB_TOKEN: ${{ secrets.API_GITHUB_TOKEN }}
       GLUON_LICENSE: ${{ secrets.GLUON_LICENSE }}
       GLUON_IOS_CERTIFICATES_FILE_BASE64: ${{ secrets.GLUON_IOS_CERTIFICATES_FILE_BASE64 }}
@@ -294,7 +294,7 @@ jobs:
       # Invoking the Gluon Client Maven plugin to build the native Desktop app (chaining build & package goals)
       - if: matrix.gluon-desktop-artifact-suffix != null
         name: Gluon Build for Desktop
-        run: mvn -B -P 'gluon-desktop' client:build client:package # May take a while
+        run: mvn -B -P 'gluon-desktop' gluonfx:build gluonfx:package # May take a while
         env:
           GRAALVM_HOME: ${{ env.JAVA_HOME }}
         working-directory: ${{ env.app-gluon-module-dir }}
@@ -311,12 +311,12 @@ jobs:
       # Staging 5) | 14)
       - if: matrix.gluon-desktop-artifact-suffix != null && runner.os != 'Windows'
         name: Copy native Desktop to staging (Linux or MacOS)
-        run: cp ${{ env.app-gluon-module-dir }}/target/client/${{ matrix.gluon-desktop-arch-token }}/${{ matrix.app.module-token }}* staging/${{ env.app-name }}-${{ matrix.gluon-desktop-artifact-suffix }}
+        run: cp ${{ env.app-gluon-module-dir }}/target/gluonfx/${{ matrix.gluon-desktop-arch-token }}/${{ matrix.app.module-token }}* staging/${{ env.app-name }}-${{ matrix.gluon-desktop-artifact-suffix }}
 
       # Staging 10)
       - if: matrix.gluon-desktop-artifact-suffix != null && runner.os == 'Windows'
         name: Copy native Desktop to staging (Windows)
-        run: Copy-Item "${{ env.app-gluon-module-dir }}/target/client/${{ matrix.gluon-desktop-arch-token }}/*.exe" -Destination "staging/${{ env.app-name }}-${{ matrix.gluon-desktop-artifact-suffix }}"
+        run: Copy-Item "${{ env.app-gluon-module-dir }}/target/gluonfx/${{ matrix.gluon-desktop-arch-token }}/*.exe" -Destination "staging/${{ env.app-name }}-${{ matrix.gluon-desktop-artifact-suffix }}"
 
 
       ##################################################################################################################
@@ -330,7 +330,7 @@ jobs:
       # Invoking the Gluon Client Maven plugin to build the native Android app (chaining build & package goals)
       - if: matrix.gluon-android-arch-token != null
         name: Gluon Build for Android
-        run: mvn -B -P 'gluon-android' clean client:build client:package # May take a while
+        run: mvn -B -P 'gluon-android' clean gluonfx:build gluonfx:package # May take a while
         env:
           GRAALVM_HOME: ${{ env.JAVA_HOME }}
         working-directory: ${{ env.app-gluon-module-dir }}
@@ -338,7 +338,7 @@ jobs:
       # Staging 6)
       - if: matrix.gluon-android-arch-token != null
         name: Copy Android native application to staging
-        run: cp ${{ env.app-gluon-module-dir }}/target/client/${{ matrix.gluon-android-arch-token }}/gvm/*.apk staging/${{ env.app-name }}-${{ matrix.gluon-android-artifact-suffix }}
+        run: cp ${{ env.app-gluon-module-dir }}/target/gluonfx/${{ matrix.gluon-android-arch-token }}/gvm/*.apk staging/${{ env.app-name }}-${{ matrix.gluon-android-artifact-suffix }}
 
 
       ##################################################################################################################
@@ -366,7 +366,7 @@ jobs:
       # Invoking the Gluon Client Maven plugin to build the native iOS app (chaining build & package goals)
       - if: matrix.gluon-ios-arch-token != null && env.GLUON_IOS_CERTIFICATES_FILE_BASE64 != ''
         name: Gluon Build for iOS
-        run: mvn -B -P 'gluon-ios' clean client:build client:package # May take a while
+        run: mvn -B -P 'gluon-ios' clean gluonfx:build gluonfx:package # May take a while
         env:
           GRAALVM_HOME: ${{ env.JAVA_HOME }}
         working-directory: ${{ env.app-gluon-module-dir }}
@@ -374,7 +374,7 @@ jobs:
       # Staging 10)
       - if: matrix.gluon-ios-arch-token != null && env.GLUON_IOS_CERTIFICATES_FILE_BASE64 != ''
         name: Copy iOS native application to staging
-        run: cp ${{ env.app-gluon-module-dir }}/target/client/${{ matrix.gluon-ios-arch-token }}/gvm/*.ipa staging/${{ env.app-name }}-${{ matrix.gluon-ios-artifact-suffix }}
+        run: cp ${{ env.app-gluon-module-dir }}/target/gluonfx/${{ matrix.gluon-ios-arch-token }}/gvm/*.ipa staging/${{ env.app-name }}-${{ matrix.gluon-ios-artifact-suffix }}
 
 
       ##################################################################################################################
