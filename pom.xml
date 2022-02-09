@@ -14,7 +14,7 @@
 
     <repositories>
 
-        <!-- For WebFx snapshots download (including webfx-parent) -->
+        <!-- For WebFX snapshots download (including webfx-parent) -->
         <repository>
             <id>webfx-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
@@ -26,7 +26,7 @@
 
     <modules>
         <module>webfx-demo-colorfulcircles-application</module>
-        <module>webfx-demo-colorfulcircles-application-javafx</module>
+        <module>webfx-demo-colorfulcircles-application-openjfx</module>
         <module>webfx-demo-colorfulcircles-application-gwt</module>
         <module>webfx-demo-colorfulcircles-application-gluon</module>
     </modules>
