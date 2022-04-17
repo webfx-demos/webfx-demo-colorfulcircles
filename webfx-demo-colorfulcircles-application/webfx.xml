@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project>
 
     <exported-packages>
@@ -12,4 +12,5 @@
     <providers>
         <javafx.application.Application>dev.webfx.demo.colorfulcircles.ColorfulCircles</javafx.application.Application>
     </providers>
+
 </project>

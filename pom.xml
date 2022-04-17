@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- File managed by WebFX (DO NOT EDIT MANUALLY) -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -10,25 +13,29 @@
 
     <artifactId>webfx-demo-colorfulcircles</artifactId>
 
-    <packaging>pom</packaging>
-
     <repositories>
 
         <!-- For WebFX snapshots download (including webfx-parent) -->
         <repository>
             <id>webfx-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <releases><enabled>false</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
 
     </repositories>
 
+    <packaging>pom</packaging>
+
     <modules>
         <module>webfx-demo-colorfulcircles-application</module>
-        <module>webfx-demo-colorfulcircles-application-openjfx</module>
-        <module>webfx-demo-colorfulcircles-application-gwt</module>
         <module>webfx-demo-colorfulcircles-application-gluon</module>
+        <module>webfx-demo-colorfulcircles-application-gwt</module>
+        <module>webfx-demo-colorfulcircles-application-openjfx</module>
     </modules>
 
 </project>
