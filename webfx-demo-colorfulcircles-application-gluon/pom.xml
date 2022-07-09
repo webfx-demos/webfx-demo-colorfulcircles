@@ -13,6 +13,8 @@
 
     <artifactId>webfx-demo-colorfulcircles-application-gluon</artifactId>
 
+    <name>WebFXDemoColorfulcircles</name>
+
     <dependencies>
 
         <dependency>
