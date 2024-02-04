@@ -12,7 +12,4 @@ module webfx.demo.colorfulcircles.application.gluon {
     requires webfx.platform.scheduler.java;
     requires webfx.platform.shutdown.gluon;
 
-    // Resources packages
-    opens dev.webfx.platform.meta.exe;
-
 }
