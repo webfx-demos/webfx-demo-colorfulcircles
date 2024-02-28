@@ -32,13 +32,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        app: [{name: 'ColorfulCircles', module-token: 'webfx-demo-colorfulcircles', gwt-token: 'webfx_demo_colorfulcircles', gluon-token: 'WebFXDemoColorfulcircles', web-push-branch: 'colorfulcircles', ios-bundle-id: 'dev.webfx.demo.colorfulcircles', version: '0.1.0-SNAPSHOT'}]
+        app: [{name: 'ColorfulCircles', module-token: 'webfx-demo-colorfulcircles', gwt-token: 'webfx_demo_colorfulcircles', gluon-token: 'WebFXDemoColorfulcircles', gwt-push-branch: 'colorfulcircles', ios-bundle-id: 'dev.webfx.demo.colorfulcircles', version: '0.1.0-SNAPSHOT'}]
         os-config:  [1, 2, 3, 4]
         include:
           - os-config: 1 # Generates builds 1) 2) 3) 4) & 5)
             os: ubuntu-latest
             # Note: 1) must run on Ubuntu because the GitHub push action (to update the web-build branch) works only on Ubuntu
-            web-artifact-suffix:           'Web.war'                            # build 1)
+            gwt-artifact-suffix:           'Web.war'                            # build 1)
             fatjar-artifact-suffix:        'Linux-x64-runnable.jar'             # build 2)
             jvm-deb-artifact-suffix:       'Linux-x64-jvm-package.deb'          # build 3)
             jvm-rpm-artifact-suffix:       'Linux-x64-jvm-package.rpm'          # build 4)
@@ -155,13 +155,13 @@ jobs:
         working-directory: ${{ env.app-repo-dir }}
 
       # Building this repository with JDK 13+ (Java 11 target) including a GWT compilation (if required)
-      - if: matrix.web-artifact-suffix != null
+      - if: matrix.gwt-artifact-suffix != null
         name: Build this application (OpenJFX fat jar + GWT build)
         run: mvn -B -P 'gwt-compile,openjfx-fatjar,openjfx-desktop' package
         working-directory: ${{ env.app-parent-module-dir }}
 
       # Or building this repository with JDK 13+ (Java 11 target) excluding a GWT compilation
-      - if: matrix.web-artifact-suffix == null
+      - if: matrix.gwt-artifact-suffix == null
         name: Build this application (OpenJFX fat jar - no GWT build)
         run: mvn -B -P '!gwt-compile,openjfx-fatjar,openjfx-desktop' package
         working-directory: ${{ env.app-parent-module-dir }}
@@ -171,8 +171,8 @@ jobs:
       #                        Updating the Web build branch (will update the live demo)                               #
       ##################################################################################################################
 
-      - if: matrix.web-artifact-suffix != null && env.API_GITHUB_TOKEN != ''
-        name: Push GWT build to ${{ matrix.app.web-push-branch }} branch
+      - if: matrix.gwt-artifact-suffix != null && env.API_GITHUB_TOKEN != ''
+        name: Push GWT build to ${{ matrix.app.gwt-push-branch }} branch
         uses: cpina/github-action-push-to-another-repository@master
         env:
           API_TOKEN_GITHUB: ${{ env.API_GITHUB_TOKEN }}
@@ -180,7 +180,7 @@ jobs:
           source-directory: ${{ env.app-gwt-build-dir }}
           destination-repository-username: ${{ env.web-push-repository-owner }}
           destination-repository-name: ${{ env.web-push-repository-name }}
-          target-branch: ${{ matrix.app.web-push-branch }}
+          target-branch: ${{ matrix.app.gwt-push-branch }}
           destination-github-username: ${{ env.web-push-username }}
           user-email: ${{ env.web-push-email }}
 
@@ -204,9 +204,9 @@ jobs:
       ##################################################################################################################
 
       # Staging 1)
-      - if: matrix.web-artifact-suffix != null
+      - if: matrix.gwt-artifact-suffix != null
         name: Copy Web archive to staging
-        run: cp ${{ env.app-gwt-module-dir }}/target/*.war staging/${{ env.app-name }}-${{ matrix.web-artifact-suffix }}
+        run: cp ${{ env.app-gwt-module-dir }}/target/*.war staging/${{ env.app-name }}-${{ matrix.gwt-artifact-suffix }}
 
       # Staging 2) | 7) | 11)
       - if: matrix.fatjar-artifact-suffix != null
