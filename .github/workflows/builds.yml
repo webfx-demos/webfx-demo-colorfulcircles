@@ -179,7 +179,7 @@ jobs:
       #                        Updating the Web build branch (will update the live demo)                               #
       ##################################################################################################################
 
-      - if: matrix.app.gwt-push-branch != null && env.API_GITHUB_TOKEN != ''
+      - if: matrix.os-config == 1 && matrix.app.gwt-push-branch != null && env.API_GITHUB_TOKEN != ''
         name: Push GWT build to ${{ matrix.app.gwt-push-branch }} branch
         uses: cpina/github-action-push-to-another-repository@master
         env:
@@ -192,7 +192,7 @@ jobs:
           destination-github-username: ${{ env.web-push-username }}
           user-email: ${{ env.web-push-email }}
 
-      - if: matrix.app.j2cl-push-branch != null && env.API_GITHUB_TOKEN != ''
+      - if: matrix.os-config == 1 && matrix.app.j2cl-push-branch != null && env.API_GITHUB_TOKEN != ''
         name: Push J2CL build to ${{ matrix.app.j2cl-push-branch }} branch
         uses: cpina/github-action-push-to-another-repository@master
         env:
