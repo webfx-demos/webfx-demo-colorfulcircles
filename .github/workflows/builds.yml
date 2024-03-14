@@ -32,7 +32,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        app: [{name: 'ColorfulCircles', module-token: 'webfx-demo-colorfulcircles', gwt-token: 'webfx_demo_colorfulcircles', gluon-token: 'WebFXDemoColorfulcircles', gwt-push-branch: 'colorfulcircles', ios-bundle-id: 'dev.webfx.demo.colorfulcircles', version: '0.1.0-SNAPSHOT'}]
+        app: [{name: 'ColorfulCircles', module-token: 'webfx-demo-colorfulcircles', gwt-token: 'webfx_demo_colorfulcircles', gluon-token: 'WebFXDemoColorfulcircles', j2cl-push-branch: 'colorfulcircles', ios-bundle-id: 'dev.webfx.demo.colorfulcircles', version: '0.1.0-SNAPSHOT'}]
         os-config:  [1, 2, 3, 4]
         include:
           - os-config: 1 # Generates builds 1) 2) 3) 4) & 5)
@@ -80,6 +80,8 @@ jobs:
       app-openjfx-module-dir:    ./${{ matrix.app.module-token }}-application-openjfx
       app-gwt-module-dir:        ./${{ matrix.app.module-token }}-application-gwt
       app-gwt-build-dir:         ./${{ matrix.app.module-token }}-application-gwt/target/${{ matrix.app.module-token }}-application-gwt-${{ matrix.app.version }}/${{ matrix.app.gwt-token }}_application_gwt
+      app-j2cl-module-dir:       ./${{ matrix.app.module-token }}-application-j2cl
+      app-j2cl-build-dir:        ./${{ matrix.app.module-token }}-application-j2cl/target/${{ matrix.app.module-token }}-application-j2cl-${{ matrix.app.version }}/${{ matrix.app.module-token }}-application-j2cl
       app-gluon-module-dir:      ./${{ matrix.app.module-token }}-application-gluon
       web-push-repository-name:  'webfx-netlify'
       web-push-repository-owner: 'webfx-project'
@@ -150,20 +152,26 @@ jobs:
       ##################################################################################################################
 
       # Building this repository with JDK 13+ (Java 11 target)
-      - name: Build this repository (no OpenJFX fat jar - no GWT build)
-        run: mvn -B -P '!gwt-compile,!openjfx-fatjar,!openjfx-desktop' install
+      - name: Build this repository
+        run: mvn -B -P install
         working-directory: ${{ env.app-repo-dir }}
 
-      # Building this repository with JDK 13+ (Java 11 target) including a GWT compilation (if required)
-      - if: matrix.gwt-artifact-suffix != null
-        name: Build this application (OpenJFX fat jar + GWT build)
-        run: mvn -B -P 'gwt-compile,openjfx-fatjar,openjfx-desktop' package
+      # Building GWT application (if required)
+      - if: matrix.gwt-artifact-suffix != null || matrix.gwt-push-branch != null
+        name: Build GWT application
+        run: mvn -B -P gwt-compile package
         working-directory: ${{ env.app-parent-module-dir }}
 
-      # Or building this repository with JDK 13+ (Java 11 target) excluding a GWT compilation
-      - if: matrix.gwt-artifact-suffix == null
-        name: Build this application (OpenJFX fat jar - no GWT build)
-        run: mvn -B -P '!gwt-compile,openjfx-fatjar,openjfx-desktop' package
+      # Building J2CL application (if required)
+      - if: matrix.j2cl-artifact-suffix != null || matrix.j2cl-push-branch != null
+        name: Build J2CL application
+        run: mvn -B -P j2cl package
+        working-directory: ${{ env.app-parent-module-dir }}
+
+      # Building OpenJFX fat jar and installers (if required)
+      - if: matrix.fatjar-artifact-suffix != null
+        name: Build OpenJFX fat jar and installers
+        run: mvn -B -P 'openjfx-fatjar,openjfx-desktop' package
         working-directory: ${{ env.app-parent-module-dir }}
 
 
@@ -171,7 +179,7 @@ jobs:
       #                        Updating the Web build branch (will update the live demo)                               #
       ##################################################################################################################
 
-      - if: matrix.gwt-artifact-suffix != null && env.API_GITHUB_TOKEN != ''
+      - if: matrix.app.gwt-push-branch != null && env.API_GITHUB_TOKEN != ''
         name: Push GWT build to ${{ matrix.app.gwt-push-branch }} branch
         uses: cpina/github-action-push-to-another-repository@master
         env:
@@ -184,6 +192,18 @@ jobs:
           destination-github-username: ${{ env.web-push-username }}
           user-email: ${{ env.web-push-email }}
 
+      - if: matrix.app.j2cl-push-branch != null && env.API_GITHUB_TOKEN != ''
+        name: Push J2CL build to ${{ matrix.app.j2cl-push-branch }} branch
+        uses: cpina/github-action-push-to-another-repository@master
+        env:
+          API_TOKEN_GITHUB: ${{ env.API_GITHUB_TOKEN }}
+        with:
+          source-directory: ${{ env.app-j2cl-build-dir }}
+          destination-repository-username: ${{ env.web-push-repository-owner }}
+          destination-repository-name: ${{ env.web-push-repository-name }}
+          target-branch: ${{ matrix.app.j2cl-push-branch }}
+          destination-github-username: ${{ env.web-push-username }}
+          user-email: ${{ env.web-push-email }}
 
       ##################################################################################################################
       #                                           Staging artifacts                                                    #
