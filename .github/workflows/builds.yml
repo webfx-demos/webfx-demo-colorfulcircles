@@ -157,19 +157,19 @@ jobs:
         working-directory: ${{ env.app-repo-dir }}
 
       # Building GWT application (if required)
-      - if: matrix.os-config == 1 && (matrix.gwt-artifact-suffix != null || matrix.app.gwt-push-branch != null)
+      - if: matrix.gwt-artifact-suffix != null || matrix.app.gwt-push-branch != null && matrix.os-config == 1
         name: Build GWT application
         run: mvn -B -P gwt-compile package
         working-directory: ${{ env.app-parent-module-dir }}
 
       # Building J2CL application (if required)
-      - if: matrix.os-config == 1 && (matrix.j2cl-artifact-suffix != null || matrix.app.j2cl-push-branch != null)
+      - if: matrix.j2cl-artifact-suffix != null || matrix.app.j2cl-push-branch != null && matrix.os-config == 1
         name: Build J2CL application
         run: mvn -B -P j2cl package
         working-directory: ${{ env.app-parent-module-dir }}
 
       # Building OpenJFX fat jar and installers (if required)
-      - if: matrix.os-config == 1 && matrix.fatjar-artifact-suffix != null
+      - if: matrix.fatjar-artifact-suffix != null
         name: Build OpenJFX fat jar and installers
         run: mvn -B -P 'openjfx-fatjar,openjfx-desktop' package
         working-directory: ${{ env.app-parent-module-dir }}
