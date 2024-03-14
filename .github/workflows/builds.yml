@@ -157,13 +157,13 @@ jobs:
         working-directory: ${{ env.app-repo-dir }}
 
       # Building GWT application (if required)
-      - if: matrix.gwt-artifact-suffix != null || matrix.gwt-push-branch != null
+      - if: matrix.gwt-artifact-suffix != null || matrix.app.gwt-push-branch != null
         name: Build GWT application
         run: mvn -B -P gwt-compile package
         working-directory: ${{ env.app-parent-module-dir }}
 
       # Building J2CL application (if required)
-      - if: matrix.j2cl-artifact-suffix != null || matrix.j2cl-push-branch != null
+      - if: matrix.j2cl-artifact-suffix != null || matrix.app.j2cl-push-branch != null
         name: Build J2CL application
         run: mvn -B -P j2cl package
         working-directory: ${{ env.app-parent-module-dir }}
