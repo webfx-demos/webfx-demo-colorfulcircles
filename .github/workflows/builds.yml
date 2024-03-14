@@ -32,7 +32,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        app: [{name: 'ColorfulCircles', module-token: 'webfx-demo-colorfulcircles', gwt-token: 'webfx_demo_colorfulcircles', gluon-token: 'WebFXDemoColorfulcircles', j2cl-push-branch: 'colorfulcircles', ios-bundle-id: 'dev.webfx.demo.colorfulcircles', version: '0.1.0-SNAPSHOT'}]
+        app: [{name: 'ColorfulCircles', module-token: 'webfx-demo-colorfulcircles', gwt-token: 'webfx_demo_colorfulcircles', gluon-token: 'WebFXDemoColorfulcircles', gwt-push-branch: 'colorfulcircles-gwt', j2cl-push-branch: 'colorfulcircles', ios-bundle-id: 'dev.webfx.demo.colorfulcircles', version: '0.1.0-SNAPSHOT'}]
         os-config:  [1, 2, 3, 4]
         include:
           - os-config: 1 # Generates builds 1) 2) 3) 4) & 5)
