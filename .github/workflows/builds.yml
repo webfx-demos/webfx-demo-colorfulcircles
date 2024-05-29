@@ -68,7 +68,7 @@ jobs:
             # msi-desktop-artifact-suffix:   'Windows-x64-jvm-installer.msi'      # build 9)
             DOWNLOAD:                      '\tmp\download\'
             MVN_PARENT:                    '\tmp\maven\'
-            MVN:                           'mvn Djavafx.platform=win'
+            MVN:                           'mvn -Djavafx.platform=win'
 
           - os-config: 4 # Generates builds 11) 12) 13) 14) & 15)
             os: macos-latest
