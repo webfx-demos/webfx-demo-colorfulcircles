@@ -62,7 +62,7 @@ jobs:
             # Commented as getting error: Error running candle to generate wixobj
             # gluon-desktop-artifact-suffix: 'Windows-x64-native-runnable.exe'    # build 10)
             # msi-desktop-artifact-suffix:   'Windows-x64-jvm-installer.msi'      # build 9)
-            MVN:                           'D:\tmp\maven\apache-maven-3.9.6\bin\mvn'
+            MVN:                           '\tmp\maven\apache-maven-3.9.6\bin\mvn'
 
           - os-config: 4 # Generates builds 11) 12) 13) 14) & 15)
             os: macos-latest
