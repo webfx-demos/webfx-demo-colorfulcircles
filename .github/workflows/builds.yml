@@ -139,8 +139,8 @@ jobs:
         run: |
           mkdir ${{ matrix.DOWNLOAD }}
           mkdir ${{ matrix.MVN_PARENT }}
-          curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz -o ${{ matrix.DOWNLOAD }}maven.tar.gz
-          tar -xzf ${{ matrix.DOWNLOAD }}maven.tar.gz -C ${{ matrix.MVN_PARENT }}
+          curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz -o ${{ matrix.DOWNLOAD }}
+          tar -xzf ${{ matrix.DOWNLOAD }}apache-maven-3.9.6-bin.tar.gz -C ${{ matrix.MVN_PARENT }}
           ${{ matrix.MVN }} -version
 
       # Checkout this repository
