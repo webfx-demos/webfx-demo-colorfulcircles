@@ -26,6 +26,7 @@ name: Multi-OS builds
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -38,24 +39,20 @@ jobs:
           - os-config: 1 # Generates builds 1) 2) 3) 4) & 5)
             os: ubuntu-latest
             # Note: 1) must run on Ubuntu because the GitHub push action (to update the web-build branch) works only on Ubuntu
-            gwt-artifact-suffix:           'Web.war'                            # build 1)
+            j2cl-artifact-suffix:          'Web.war'                            # build 1)
             fatjar-artifact-suffix:        'Linux-x64-runnable.jar'             # build 2)
             jvm-deb-artifact-suffix:       'Linux-x64-jvm-package.deb'          # build 3)
             jvm-rpm-artifact-suffix:       'Linux-x64-jvm-package.rpm'          # build 4)
             gluon-desktop-arch-token:      'x86_64-linux'                       # build 5)
             gluon-desktop-artifact-suffix: 'Linux-x64-native-runnable'          # build 5)
-            DOWNLOAD:                      '/tmp/download/'
-            MVN_PARENT:                    '/tmp/maven/'
-            MVN:                           '/tmp/maven/apache-maven-3.9.6/bin/mvn'
+            MVN:                           '/tmp/maven/apache-maven-3.8.8/bin/mvn'
 
           - os-config: 2 # Generates build 6) - Could be in os-config 1 but moved it a separate config to speed up (parallel run)
             os: ubuntu-latest
             gluon-android-arch-token:      'aarch64-android'                    # build 6)
             gluon-android-apk-suffix:      'Android-aarch64.apk'                # build 6)
             gluon-android-aab-suffix:      'Android-aarch64.aab'                # build 6)
-            DOWNLOAD:                      '/tmp/download'
-            MVN_PARENT:                    '/tmp/maven'
-            MVN:                           '/tmp/maven/apache-maven-3.9.6/bin/mvn'
+            MVN:                           '/tmp/maven/apache-maven-3.8.8/bin/mvn'
 
           - os-config: 3 # Generates builds 7) 8) 9) & 10)
             os: windows-latest
@@ -66,8 +63,6 @@ jobs:
             # Commented as getting error: Error running candle to generate wixobj
             # gluon-desktop-artifact-suffix: 'Windows-x64-native-runnable.exe'    # build 10)
             # msi-desktop-artifact-suffix:   'Windows-x64-jvm-installer.msi'      # build 9)
-            DOWNLOAD:                      '\tmp\download\'
-            MVN_PARENT:                    '\tmp\maven\'
             MVN:                           'mvn -D"javafx.platform"="win"'
 
           - os-config: 4 # Generates builds 11) 12) 13) 14) & 15)
@@ -81,9 +76,7 @@ jobs:
             # Note: the iOS build needs the Apple certificate in secrets (the steps will be skipped otherwise)
             gluon-ios-arch-token:          'arm64-ios'                          # build 15)
             gluon-ios-artifact-suffix:     'iOS-arm64-native.ipa'               # build 15)
-            DOWNLOAD:                      '/tmp/download/'
-            MVN_PARENT:                    '/tmp/maven/'
-            MVN:                           '/tmp/maven/apache-maven-3.9.6/bin/mvn'
+            MVN:                           '/tmp/maven/apache-maven-3.8.8/bin/mvn'
 
     env:
       app-name:  ${{ matrix.app.name }}
@@ -134,15 +127,15 @@ jobs:
           distribution: 'zulu'
           java-version: ${{ env.jdk-version }}
 
-      # Forcing Maven 3.9.6 because of a JavaFX issue with >= 3.9.7
+      # Forcing Maven 3.8.8 because of a JavaFX issue with >= 3.9.7 and GluonFX Maven Plugin requires Maven 3.8.8
       - if: runner.os != 'Windows'
-        name: Download and Install Maven 3.9.6
+        name: Download and Install Maven 3.8.8
         run: |
-          mkdir ${{ matrix.DOWNLOAD }}
-          mkdir ${{ matrix.MVN_PARENT }}
-          cd ${{ matrix.DOWNLOAD }}
-          curl -O https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
-          tar -xzf apache-maven-3.9.6-bin.tar.gz -C ${{ matrix.MVN_PARENT }}
+          mkdir /tmp/download
+          mkdir /tmp/maven/
+          cd /tmp/download
+          curl -O https://dlcdn.apache.org/maven/maven-3/3.8.8/binaries/apache-maven-3.8.8-bin.tar.gz
+          tar -xzf apache-maven-3.8.8-bin.tar.gz -C /tmp/maven/
           ${{ matrix.MVN }} -version
 
       # Checkout this repository
