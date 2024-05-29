@@ -125,7 +125,7 @@ jobs:
       # Forcing Maven 3.9.6 because of a JavaFX issue with >= 3.9.7
       - name: Download Maven
         run: |
-          curl -sSL https://downloads.apache.org/maven/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz -o maven.tar.gz
+          curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz -o maven.tar.gz
           tar -xzf maven.tar.gz
         working-directory: $HOME/maven  # Adjust download directory
 
