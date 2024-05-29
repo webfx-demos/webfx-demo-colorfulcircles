@@ -131,7 +131,7 @@ jobs:
           mkdir /tmp/maven
           curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz -o /tmp/download/maven.tar.gz
           tar -xzf /tmp/download/maven.tar.gz -C /tmp/maven
-          ${{ MAVEN_BIN }}/mvn -version
+          ${{ env.MAVEN_BIN }}/mvn -version
 
       # Checkout this repository
       - name: Checkout this repository
@@ -164,25 +164,25 @@ jobs:
 
       # Building this repository with JDK 13+ (Java 11 target)
       - name: Build this repository
-        run: ${{ MAVEN_BIN }}/mvn -B install
+        run: ${{ env.MAVEN_BIN }}/mvn -B install
         working-directory: ${{ env.app-repo-dir }}
 
       # Building GWT application (if required)
       - if: matrix.gwt-artifact-suffix != null || matrix.app.gwt-push-branch != null && matrix.os-config == 1
         name: Build GWT application
-        run: ${{ MAVEN_BIN }}/mvn -B -P gwt-compile package
+        run: ${{ env.MAVEN_BIN }}/mvn -B -P gwt-compile package
         working-directory: ${{ env.app-parent-module-dir }}
 
       # Building J2CL application (if required)
       - if: matrix.j2cl-artifact-suffix != null || matrix.app.j2cl-push-branch != null && matrix.os-config == 1
         name: Build J2CL application
-        run: ${{ MAVEN_BIN }}/mvn -B -P j2cl package
+        run: ${{ env.MAVEN_BIN }}/mvn -B -P j2cl package
         working-directory: ${{ env.app-parent-module-dir }}
 
       # Building OpenJFX fat jar and installers (if required)
       - if: matrix.fatjar-artifact-suffix != null
         name: Build OpenJFX fat jar and installers
-        run: ${{ MAVEN_BIN }}/mvn -B -P 'openjfx-fatjar,openjfx-desktop' package
+        run: ${{ env.MAVEN_BIN }}/mvn -B -P 'openjfx-fatjar,openjfx-desktop' package
         working-directory: ${{ env.app-parent-module-dir }}
 
 
@@ -282,7 +282,7 @@ jobs:
       - if: matrix.msi-desktop-artifact-suffix != null
         name: Create Windows Installer (msi)
         run: |
-          ${{ MAVEN_BIN }}/mvn -B javafx:jlink
+          ${{ env.MAVEN_BIN }}\mvn -B javafx:jlink
           ${{ env.JAVA_HOME }}\bin\jpackage --input .\target\ --name ${{ env.app-name }} --main-jar ${{ matrix.app.module-token }}-application-openjfx-${{ matrix.app.version }}.jar --main-class dev.webfx.platform.shared.services.boot.ApplicationBooter --type msi --runtime-image .\target\jlinkImage --app-version 0.0.0 --win-per-user-install --win-menu --win-menu-group WebFX
         working-directory: ${{ env.app-openjfx-module-dir }}
 
@@ -338,7 +338,7 @@ jobs:
       # Invoking the Gluon Client Maven plugin to build the native Desktop app (chaining build & package goals)
       - if: matrix.gluon-desktop-artifact-suffix != null
         name: Gluon Build for Desktop
-        run: ${{ MAVEN_BIN }}/mvn -B -P 'gluon-desktop' gluonfx:build gluonfx:package # May take a while
+        run: ${{ env.MAVEN_BIN }}/mvn -B -P 'gluon-desktop' gluonfx:build gluonfx:package # May take a while
         env:
           GRAALVM_HOME: ${{ env.JAVA_HOME }}
         working-directory: ${{ env.app-gluon-module-dir }}
@@ -385,7 +385,7 @@ jobs:
         name: Gluon Build for Android
         run: |
           export ANDROID_SDK=$ANDROID_HOME # Otherwise GluonFX 1.0.16 package task is failing
-          ${{ MAVEN_BIN }}/mvn -B -P 'gluon-android' clean gluonfx:build gluonfx:package # May take a while
+          ${{ env.MAVEN_BIN }}/mvn -B -P 'gluon-android' clean gluonfx:build gluonfx:package # May take a while
         env:
           GRAALVM_HOME: ${{ env.JAVA_HOME }}
           GLUON_ANDROID_KEYSTOREPATH: ${{ steps.android_keystore_file.outputs.filePath }}
@@ -442,7 +442,7 @@ jobs:
       # Invoking the Gluon Client Maven plugin to build the native iOS app (chaining build & package goals)
       - if: matrix.gluon-ios-arch-token != null && env.GLUON_IOS_CERTIFICATES_BASE64 != ''
         name: Gluon Build for iOS
-        run: ${{ MAVEN_BIN }}/mvn -B -P 'gluon-ios' clean gluonfx:build gluonfx:package # May take a while
+        run: ${{ env.MAVEN_BIN }}/mvn -B -P 'gluon-ios' clean gluonfx:build gluonfx:package # May take a while
         env:
           GRAALVM_HOME: ${{ env.JAVA_HOME }}
         working-directory: ${{ env.app-gluon-module-dir }}
