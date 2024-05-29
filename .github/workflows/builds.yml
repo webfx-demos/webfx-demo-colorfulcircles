@@ -44,6 +44,8 @@ jobs:
             jvm-rpm-artifact-suffix:       'Linux-x64-jvm-package.rpm'          # build 4)
             gluon-desktop-arch-token:      'x86_64-linux'                       # build 5)
             gluon-desktop-artifact-suffix: 'Linux-x64-native-runnable'          # build 5)
+            DOWNLOAD:                      '/tmp/download/'
+            MVN_PARENT:                    '/tmp/maven/'
             MVN:                           '/tmp/maven/apache-maven-3.9.6/bin/mvn'
 
           - os-config: 2 # Generates build 6) - Could be in os-config 1 but moved it a separate config to speed up (parallel run)
@@ -51,6 +53,8 @@ jobs:
             gluon-android-arch-token:      'aarch64-android'                    # build 6)
             gluon-android-apk-suffix:      'Android-aarch64.apk'                # build 6)
             gluon-android-aab-suffix:      'Android-aarch64.aab'                # build 6)
+            DOWNLOAD:                      '/tmp/download'
+            MVN_PARENT:                    '/tmp/maven'
             MVN:                           '/tmp/maven/apache-maven-3.9.6/bin/mvn'
 
           - os-config: 3 # Generates builds 7) 8) 9) & 10)
@@ -62,6 +66,8 @@ jobs:
             # Commented as getting error: Error running candle to generate wixobj
             # gluon-desktop-artifact-suffix: 'Windows-x64-native-runnable.exe'    # build 10)
             # msi-desktop-artifact-suffix:   'Windows-x64-jvm-installer.msi'      # build 9)
+            DOWNLOAD:                      '\tmp\download\'
+            MVN_PARENT:                    '\tmp\maven\'
             MVN:                           '\tmp\maven\apache-maven-3.9.6\bin\mvn'
 
           - os-config: 4 # Generates builds 11) 12) 13) 14) & 15)
@@ -75,6 +81,8 @@ jobs:
             # Note: the iOS build needs the Apple certificate in secrets (the steps will be skipped otherwise)
             gluon-ios-arch-token:          'arm64-ios'                          # build 15)
             gluon-ios-artifact-suffix:     'iOS-arm64-native.ipa'               # build 15)
+            DOWNLOAD:                      '/tmp/download/'
+            MVN_PARENT:                    '/tmp/maven/'
             MVN:                           '/tmp/maven/apache-maven-3.9.6/bin/mvn'
 
     env:
@@ -129,10 +137,10 @@ jobs:
       # Forcing Maven 3.9.6 because of a JavaFX issue with >= 3.9.7
       - name: Download Maven
         run: |
-          mkdir /tmp/download
-          mkdir /tmp/maven
-          curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz -o /tmp/download/maven.tar.gz
-          tar -xzf /tmp/download/maven.tar.gz -C /tmp/maven
+          mkdir ${{ matrix.DOWNLOAD }}
+          mkdir ${{ matrix.MAVEN_PARENT }}
+          curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz -o ${{ matrix.DOWNLOAD }}maven.tar.gz
+          tar -xzf ${{ matrix.DOWNLOAD }}maven.tar.gz -C ${{ matrix.MAVEN_PARENT }}
           ${{ matrix.MVN }} -version
 
       # Checkout this repository
