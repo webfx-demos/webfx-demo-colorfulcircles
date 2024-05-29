@@ -44,14 +44,14 @@ jobs:
             jvm-rpm-artifact-suffix:       'Linux-x64-jvm-package.rpm'          # build 4)
             gluon-desktop-arch-token:      'x86_64-linux'                       # build 5)
             gluon-desktop-artifact-suffix: 'Linux-x64-native-runnable'          # build 5)
-            MAVEN_BIN:                     '/tmp/maven/apache-maven-3.9.6/bin'
+            MVN:                           '/tmp/maven/apache-maven-3.9.6/bin/mvn'
 
           - os-config: 2 # Generates build 6) - Could be in os-config 1 but moved it a separate config to speed up (parallel run)
             os: ubuntu-latest
             gluon-android-arch-token:      'aarch64-android'                    # build 6)
             gluon-android-apk-suffix:      'Android-aarch64.apk'                # build 6)
             gluon-android-aab-suffix:      'Android-aarch64.aab'                # build 6)
-            MAVEN_BIN:                     '/tmp/maven/apache-maven-3.9.6/bin'
+            MVN:                           '/tmp/maven/apache-maven-3.9.6/bin/mvn'
 
           - os-config: 3 # Generates builds 7) 8) 9) & 10)
             os: windows-latest
@@ -62,7 +62,7 @@ jobs:
             # Commented as getting error: Error running candle to generate wixobj
             # gluon-desktop-artifact-suffix: 'Windows-x64-native-runnable.exe'    # build 10)
             # msi-desktop-artifact-suffix:   'Windows-x64-jvm-installer.msi'      # build 9)
-            MAVEN_BIN:                     'D:\tmp\maven\apache-maven-3.9.6\bin'
+            MVN:                           'D:\tmp\maven\apache-maven-3.9.6\bin\mvn'
 
           - os-config: 4 # Generates builds 11) 12) 13) 14) & 15)
             os: macos-latest
@@ -75,7 +75,7 @@ jobs:
             # Note: the iOS build needs the Apple certificate in secrets (the steps will be skipped otherwise)
             gluon-ios-arch-token:          'arm64-ios'                          # build 15)
             gluon-ios-artifact-suffix:     'iOS-arm64-native.ipa'               # build 15)
-            MAVEN_BIN:                     '/tmp/maven/apache-maven-3.9.6/bin'
+            MVN:                           '/tmp/maven/apache-maven-3.9.6/bin/mvn'
 
     env:
       app-name:  ${{ matrix.app.name }}
@@ -133,7 +133,7 @@ jobs:
           mkdir /tmp/maven
           curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz -o /tmp/download/maven.tar.gz
           tar -xzf /tmp/download/maven.tar.gz -C /tmp/maven
-          ${{ matrix.MAVEN_BIN }}/mvn -version
+          ${{ matrix.MVN }} -version
 
       # Checkout this repository
       - name: Checkout this repository
@@ -166,25 +166,25 @@ jobs:
 
       # Building this repository with JDK 13+ (Java 11 target)
       - name: Build this repository
-        run: ${{ matrix.MAVEN_BIN }}/mvn -B install
+        run: ${{ matrix.MVN }} -B install
         working-directory: ${{ env.app-repo-dir }}
 
       # Building GWT application (if required)
       - if: matrix.gwt-artifact-suffix != null || matrix.app.gwt-push-branch != null && matrix.os-config == 1
         name: Build GWT application
-        run: ${{ matrix.MAVEN_BIN }}/mvn -B -P gwt-compile package
+        run: ${{ matrix.MVN }} -B -P gwt-compile package
         working-directory: ${{ env.app-parent-module-dir }}
 
       # Building J2CL application (if required)
       - if: matrix.j2cl-artifact-suffix != null || matrix.app.j2cl-push-branch != null && matrix.os-config == 1
         name: Build J2CL application
-        run: ${{ matrix.MAVEN_BIN }}/mvn -B -P j2cl package
+        run: ${{ matrix.MVN }} -B -P j2cl package
         working-directory: ${{ env.app-parent-module-dir }}
 
       # Building OpenJFX fat jar and installers (if required)
       - if: matrix.fatjar-artifact-suffix != null
         name: Build OpenJFX fat jar and installers
-        run: ${{ matrix.MAVEN_BIN }}/mvn -B -P 'openjfx-fatjar,openjfx-desktop' package
+        run: ${{ matrix.MVN }} -B -P 'openjfx-fatjar,openjfx-desktop' package
         working-directory: ${{ env.app-parent-module-dir }}
 
 
@@ -340,7 +340,7 @@ jobs:
       # Invoking the Gluon Client Maven plugin to build the native Desktop app (chaining build & package goals)
       - if: matrix.gluon-desktop-artifact-suffix != null
         name: Gluon Build for Desktop
-        run: ${{ matrix.MAVEN_BIN }}/mvn -B -P 'gluon-desktop' gluonfx:build gluonfx:package # May take a while
+        run: ${{ matrix.MVN }} -B -P 'gluon-desktop' gluonfx:build gluonfx:package # May take a while
         env:
           GRAALVM_HOME: ${{ env.JAVA_HOME }}
         working-directory: ${{ env.app-gluon-module-dir }}
@@ -387,7 +387,7 @@ jobs:
         name: Gluon Build for Android
         run: |
           export ANDROID_SDK=$ANDROID_HOME # Otherwise GluonFX 1.0.16 package task is failing
-          ${{ matrix.MAVEN_BIN }}/mvn -B -P 'gluon-android' clean gluonfx:build gluonfx:package # May take a while
+          ${{ matrix.MVN }} -B -P 'gluon-android' clean gluonfx:build gluonfx:package # May take a while
         env:
           GRAALVM_HOME: ${{ env.JAVA_HOME }}
           GLUON_ANDROID_KEYSTOREPATH: ${{ steps.android_keystore_file.outputs.filePath }}
@@ -444,7 +444,7 @@ jobs:
       # Invoking the Gluon Client Maven plugin to build the native iOS app (chaining build & package goals)
       - if: matrix.gluon-ios-arch-token != null && env.GLUON_IOS_CERTIFICATES_BASE64 != ''
         name: Gluon Build for iOS
-        run: ${{ matrix.MAVEN_BIN }}/mvn -B -P 'gluon-ios' clean gluonfx:build gluonfx:package # May take a while
+        run: ${{ matrix.MVN }} -B -P 'gluon-ios' clean gluonfx:build gluonfx:package # May take a while
         env:
           GRAALVM_HOME: ${{ env.JAVA_HOME }}
         working-directory: ${{ env.app-gluon-module-dir }}
