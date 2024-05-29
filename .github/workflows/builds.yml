@@ -104,7 +104,7 @@ jobs:
       GLUON_IOS_APPSTORE_PRIVATE_KEY: ${{ secrets.GLUON_IOS_APPSTORE_PRIVATE_KEY }}
       GLUON_IOS_APPSTORE_ISSUER_ID: ${{ secrets.GLUON_IOS_APPSTORE_ISSUER_ID }}
       MAVEN_HOME: '/tmp/maven/apache-maven-3.9.6'
-      MAVEN_BIN: '${{ env.MAVEN_HOME }}/bin'
+      MAVEN_BIN:  '/tmp/maven/apache-maven-3.9.6/bin'
 
     steps:
 
