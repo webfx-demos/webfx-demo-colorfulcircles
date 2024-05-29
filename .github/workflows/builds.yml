@@ -141,6 +141,9 @@ jobs:
           mkdir ${{ matrix.MVN_PARENT }}
           cd ${{ matrix.DOWNLOAD }}
           curl -O https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+
+      - name: Install Maven
+        run: |
           tar -xzf apache-maven-3.9.6-bin.tar.gz -C ${{ matrix.MVN_PARENT }}
           ${{ matrix.MVN }} -version
 
