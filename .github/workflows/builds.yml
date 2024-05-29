@@ -68,7 +68,7 @@ jobs:
             # msi-desktop-artifact-suffix:   'Windows-x64-jvm-installer.msi'      # build 9)
             DOWNLOAD:                      '\tmp\download\'
             MVN_PARENT:                    '\tmp\maven\'
-            MVN:                           '\tmp\maven\apache-maven-3.9.6\bin\mvn'
+            MVN:                           'mvn Djavafx.platform=win'
 
           - os-config: 4 # Generates builds 11) 12) 13) 14) & 15)
             os: macos-latest
@@ -135,16 +135,13 @@ jobs:
           java-version: ${{ env.jdk-version }}
 
       # Forcing Maven 3.9.6 because of a JavaFX issue with >= 3.9.7
-      - name: Download Maven
+      - if: runner.os != 'Windows'
+        name: Download and Install Maven 3.9.6
         run: |
           mkdir ${{ matrix.DOWNLOAD }}
           mkdir ${{ matrix.MVN_PARENT }}
           cd ${{ matrix.DOWNLOAD }}
           curl -O https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
-
-      - name: Install Maven
-        run: |
-          cd ${{ matrix.DOWNLOAD }}
           tar -xzf apache-maven-3.9.6-bin.tar.gz -C ${{ matrix.MVN_PARENT }}
           ${{ matrix.MVN }} -version
 
