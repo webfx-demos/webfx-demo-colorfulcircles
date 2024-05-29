@@ -130,7 +130,7 @@ jobs:
           mkdir /tmp/maven
           curl -sSL https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz -o /tmp/download/maven.tar.gz
           tar -xzf /tmp/download/maven.tar.gz -C /tmp/maven
-          alias mvn = ${{ MAVEN_HOME }}/bin/mvn
+          alias mvn = ${{ env.MAVEN_HOME }}/bin/mvn
           mvn -version
 
       # Checkout this repository
