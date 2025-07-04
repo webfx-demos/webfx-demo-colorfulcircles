@@ -34,20 +34,20 @@ jobs:
     strategy:
       matrix:
         app: [{name: 'ColorfulCircles', module-token: 'webfx-demo-colorfulcircles', gwt-token: 'webfx_demo_colorfulcircles', gluon-token: 'WebFXDemoColorfulcircles', gwt-push-branch: 'colorfulcircles-gwt', j2cl-push-branch: 'colorfulcircles', ios-bundle-id: 'dev.webfx.demo.colorfulcircles', version: '0.1.0-SNAPSHOT'}]
-        os-config:  [1, 2, 3, 4]
+        os-config: [1] # [1, 2, 3, 4]
         include:
           - os-config: 1 # Generates builds 1) 2) 3) 4) & 5)
             os: ubuntu-latest
             # Note: 1) must run on Ubuntu because the GitHub push action (to update the web-build branch) works only on Ubuntu
             j2cl-artifact-suffix:          'Web.war'                            # build 1)
             fatjar-artifact-suffix:        'Linux-x64-runnable.jar'             # build 2)
-            jvm-deb-artifact-suffix:       'Linux-x64-jvm-package.deb'          # build 3)
-            jvm-rpm-artifact-suffix:       'Linux-x64-jvm-package.rpm'          # build 4)
-            gluon-desktop-arch-token:      'x86_64-linux'                       # build 5)
-            gluon-desktop-artifact-suffix: 'Linux-x64-native-runnable'          # build 5)
+            #jvm-deb-artifact-suffix:       'Linux-x64-jvm-package.deb'          # build 3)
+            #jvm-rpm-artifact-suffix:       'Linux-x64-jvm-package.rpm'          # build 4)
+            #gluon-desktop-arch-token:      'x86_64-linux'                       # build 5)
+            #gluon-desktop-artifact-suffix: 'Linux-x64-native-runnable'          # build 5)
             MVN:                           '/tmp/maven/apache-maven-3.8.8/bin/mvn'
 
-          - os-config: 2 # Generates build 6) - Could be in os-config 1 but moved it a separate config to speed up (parallel run)
+          - os-config: 2 # Generates build 6) - Could be in os-config 1 but moved it in a separate config to speed up (parallel run)
             os: ubuntu-latest
             gluon-android-arch-token:      'aarch64-android'                    # build 6)
             gluon-android-apk-suffix:      'Android-aarch64.apk'                # build 6)
@@ -70,7 +70,7 @@ jobs:
             fatjar-artifact-suffix:        'MacOS-x64.jar'                      # build 11)
             jvm-dmg-artifact-suffix:       'MacOS-x64-jvm.dmg'                  # build 12)
             jvm-pkg-artifact-suffix:       'MacOS-x64-jvm.pkg'                  # build 13)
-            # Commented MacOS Desktop due to new error from Gluon plugin: No valid Identity (Certificate) found for macOS development.
+            # Commented macOS Desktop due to a new error from Gluon plugin: No valid Identity (Certificate) found for macOS development.
             # gluon-desktop-arch-token:      'x86_64-darwin'                      # build 14)
             # gluon-desktop-Artifact-suffix: 'MacOS-x64-native-runnable'          # build 14)
             # Note: the iOS build needs the Apple certificate in secrets (the steps will be skipped otherwise)
@@ -186,8 +186,8 @@ jobs:
 
       # Building OpenJFX fat jar and installers (if required)
       - if: matrix.fatjar-artifact-suffix != null
-        name: Build OpenJFX fat jar and installers
-        run: ${{ matrix.MVN }} -B -P 'openjfx-fatjar,openjfx-desktop' package
+        name: Build OpenJFX fat jar
+        run: ${{ matrix.MVN }} -B -P 'openjfx-fatjar' package # ${{ matrix.MVN }} -B -P 'openjfx-fatjar,openjfx-desktop'
         working-directory: ${{ env.app-parent-module-dir }}
 
 
@@ -412,7 +412,7 @@ jobs:
           cp ${{ env.app-gluon-module-dir }}/target/gluonfx/${{ matrix.gluon-android-arch-token }}/gvm/*.apk staging/${{ env.app-name }}-${{ matrix.gluon-android-apk-suffix }}
           cp ${{ env.app-gluon-module-dir }}/target/gluonfx/${{ matrix.gluon-android-arch-token }}/gvm/*.aab staging/${{ env.app-name }}-${{ matrix.gluon-android-aab-suffix }}
 
-      # Uploading to Google Play (if json provided)
+      # Uploading to Google Play (if JSON provided)
       - if: matrix.gluon-ios-arch-token != null && env.GLUON_ANDROID_SERVICE_ACCOUNT_JSON != ''
         name: Upload to Google Play
         uses: r0adkll/upload-google-play@v1.0.19
@@ -532,7 +532,7 @@ jobs:
       - name: Make upload directory
         run: mkdir upload
 
-      # Moving all artifact into the upload directory
+      # Moving all artifacts into the upload directory
       - run: find download -type f -exec mv -t upload {} +
 
       # Clearing SNAPSHOT release assets
