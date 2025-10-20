@@ -33,7 +33,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        app: [{name: 'ColorfulCircles', module-token: 'webfx-demo-colorfulcircles', gwt-token: 'webfx_demo_colorfulcircles', gluon-token: 'WebFXDemoColorfulcircles', gwt-push-branch: 'colorfulcircles', ios-bundle-id: 'dev.webfx.demo.colorfulcircles', version: '0.1.0-SNAPSHOT'}]
+        app: [{name: 'ColorfulCircles', module-token: 'webfx-demo-colorfulcircles', gwt-token: 'webfx_demo_colorfulcircles', gluon-token: 'WebFXDemoColorfulcircles', gwt-push-branch: 'colorfulcircles', teavm-push-branch: 'colorfulcircles-teavm' ios-bundle-id: 'dev.webfx.demo.colorfulcircles', version: '0.1.0-SNAPSHOT'}]
         os-config: [1]
         include:
           - os-config: 1 # Generates builds 1) 2) 3) 4) & 5)
@@ -57,6 +57,8 @@ jobs:
       app-gwt-build-dir:         ./${{ matrix.app.module-token }}-application-gwt/target/${{ matrix.app.module-token }}-application-gwt-${{ matrix.app.version }}/${{ matrix.app.gwt-token }}_application_gwt
       app-j2cl-module-dir:       ./${{ matrix.app.module-token }}-application-j2cl
       app-j2cl-build-dir:        ./${{ matrix.app.module-token }}-application-j2cl/target/${{ matrix.app.module-token }}-application-j2cl-${{ matrix.app.version }}/${{ matrix.app.module-token }}-application-j2cl
+      app-teavm-module-dir:       ./${{ matrix.app.module-token }}-application-teavm
+      app-teavm-build-dir:        ./${{ matrix.app.module-token }}-application-teavm/target/teavm
       app-gluon-module-dir:      ./${{ matrix.app.module-token }}-application-gluon
       web-push-repository-name:  'webfx-netlify'
       web-push-repository-owner: 'webfx-project'
@@ -154,6 +156,12 @@ jobs:
         run: ${{ matrix.MVN }} -B -P j2cl package
         working-directory: ${{ env.app-parent-module-dir }}
 
+      # Building TeaVM application (if required)
+      - if: matrix.teavm-artifact-suffix != null || matrix.app.teavm-push-branch != null && matrix.os-config == 1
+        name: Build TeaVM application
+        run: ${{ matrix.MVN }} -B -Pteavm package
+        working-directory: ${{ env.app-parent-module-dir }}
+
       # Building OpenJFX fat jar and installers (if required)
       - if: matrix.fatjar-artifact-suffix != null
         name: Build OpenJFX fat jar
@@ -188,6 +196,19 @@ jobs:
           destination-repository-username: ${{ env.web-push-repository-owner }}
           destination-repository-name: ${{ env.web-push-repository-name }}
           target-branch: ${{ matrix.app.j2cl-push-branch }}
+          destination-github-username: ${{ env.web-push-username }}
+          user-email: ${{ env.web-push-email }}
+
+      - if: matrix.os-config == 1 && matrix.app.teavm-push-branch != null && env.API_GITHUB_TOKEN != ''
+        name: Push TeaVM build to ${{ matrix.app.teavm-push-branch }} branch
+        uses: cpina/github-action-push-to-another-repository@master
+        env:
+          API_TOKEN_GITHUB: ${{ env.API_GITHUB_TOKEN }}
+        with:
+          source-directory: ${{ env.app-teavm-build-dir }}
+          destination-repository-username: ${{ env.web-push-repository-owner }}
+          destination-repository-name: ${{ env.web-push-repository-name }}
+          target-branch: ${{ matrix.app.teavm-push-branch }}
           destination-github-username: ${{ env.web-push-username }}
           user-email: ${{ env.web-push-email }}
 

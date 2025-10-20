@@ -38,6 +38,7 @@
         <module>webfx-demo-colorfulcircles-application-gwt</module>
         <module>webfx-demo-colorfulcircles-application-j2cl</module>
         <module>webfx-demo-colorfulcircles-application-openjfx</module>
+        <module>webfx-demo-colorfulcircles-application-teavm</module>
     </modules>
 
 </project>

@@ -51,7 +51,7 @@
 
         <dependency>
             <groupId>dev.webfx</groupId>
-            <artifactId>webfx-kit-javafxgraphics-gwt-j2cl</artifactId>
+            <artifactId>webfx-kit-javafxgraphics-elemental2</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
@@ -72,14 +72,14 @@
 
         <dependency>
             <groupId>dev.webfx</groupId>
-            <artifactId>webfx-kit-javafxgraphics-peers-gwt-j2cl</artifactId>
+            <artifactId>webfx-kit-javafxgraphics-peers-elemental2</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
 
         <dependency>
             <groupId>dev.webfx</groupId>
-            <artifactId>webfx-kit-javafxgraphics-registry-gwt-j2cl</artifactId>
+            <artifactId>webfx-kit-javafxgraphics-registry-elemental2</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
@@ -121,7 +121,7 @@
 
         <dependency>
             <groupId>dev.webfx</groupId>
-            <artifactId>webfx-platform-console-gwt-j2cl</artifactId>
+            <artifactId>webfx-platform-console-elemental2</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
@@ -142,6 +142,28 @@
 
         <dependency>
             <groupId>dev.webfx</groupId>
+            <artifactId>webfx-platform-os</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <classifier>sources</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.webfx</groupId>
+            <artifactId>webfx-platform-os-elemental2</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <classifier>sources</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.webfx</groupId>
+            <artifactId>webfx-platform-polyfillcompat</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+            <classifier>sources</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.webfx</groupId>
             <artifactId>webfx-platform-resource</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <classifier>sources</classifier>
@@ -149,7 +171,14 @@
 
         <dependency>
             <groupId>dev.webfx</groupId>
-            <artifactId>webfx-platform-resource-gwt</artifactId>
+            <artifactId>webfx-platform-resource-elemental2</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <classifier>sources</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.webfx</groupId>
+            <artifactId>webfx-platform-resource-web</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
@@ -184,7 +213,7 @@
 
         <dependency>
             <groupId>dev.webfx</groupId>
-            <artifactId>webfx-platform-shutdown-gwt-j2cl</artifactId>
+            <artifactId>webfx-platform-shutdown-elemental2</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
@@ -198,7 +227,7 @@
 
         <dependency>
             <groupId>dev.webfx</groupId>
-            <artifactId>webfx-platform-uischeduler-gwt-j2cl</artifactId>
+            <artifactId>webfx-platform-uischeduler-elemental2</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
@@ -212,7 +241,7 @@
 
         <dependency>
             <groupId>dev.webfx</groupId>
-            <artifactId>webfx-platform-useragent-gwt-j2cl</artifactId>
+            <artifactId>webfx-platform-useragent-elemental2</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
@@ -220,6 +249,13 @@
         <dependency>
             <groupId>dev.webfx</groupId>
             <artifactId>webfx-platform-util</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+            <classifier>sources</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.webfx</groupId>
+            <artifactId>webfx-platform-util-elemental2</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <classifier>sources</classifier>
         </dependency>
