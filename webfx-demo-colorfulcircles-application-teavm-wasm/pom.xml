@@ -11,7 +11,7 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>webfx-demo-colorfulcircles-application-teavm</artifactId>
+    <artifactId>webfx-demo-colorfulcircles-application-teavm-wasm</artifactId>
 
     <packaging>war</packaging>
 
@@ -90,6 +90,7 @@
 
     </dependencies>
 
+<!--
     <profiles>
         <profile>
             <id>teavm</id>
@@ -109,7 +110,7 @@
                                     <artifactItems>
                                         <artifactItem>
                                             <groupId>dev.webfx</groupId>
-                                            <artifactId>webfx-demo-colorfulcircles-application-teavm</artifactId>
+                                            <artifactId>webfx-demo-colorfulcircles-application-teavm-wasm</artifactId>
                                             <version>0.1.0-SNAPSHOT</version>
                                             <includes>dev/webfx/platform/meta/exe/</includes>
                                         </artifactItem>
@@ -124,5 +125,6 @@
             </build>
         </profile>
     </profiles>
+-->
 
 </project>
