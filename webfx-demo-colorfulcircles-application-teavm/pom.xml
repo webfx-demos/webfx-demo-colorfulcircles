@@ -90,6 +90,7 @@
 
     </dependencies>
 
+<!--
     <profiles>
         <profile>
             <id>teavm</id>
@@ -124,5 +125,6 @@
             </build>
         </profile>
     </profiles>
+-->
 
 </project>
